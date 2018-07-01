@@ -31,6 +31,7 @@
 #![cfg_attr(feature = "cargo-clippy", forbid(clippy_perf))]
 #![cfg_attr(feature = "cargo-clippy", forbid(clippy_style))]
 
+#[cfg(test)]
 extern crate winreg;
 
 #[cfg(test)]
