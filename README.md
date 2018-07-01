@@ -7,6 +7,18 @@
 
 Provides support for detecting Windows SDK installations.
 
+## Example
+
+```rust
+extern crate find_winsdk;
+
+use find_winsdk::SdkInfo;
+
+fn main() {
+    println!("{:?}", SdkInfo::any().unwrap().expect("Windows SDK is not installed"));
+}
+```
+
 ## License
 
 Licensed under either of
