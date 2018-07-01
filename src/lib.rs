@@ -11,7 +11,7 @@
 #![cfg(target_os = "windows")]
 #![forbid(warnings)]
 #![forbid(future_incompatible)]
-#![forbid(unused)]
+#![deny(unused)]
 #![forbid(box_pointers)]
 #![forbid(missing_copy_implementations)]
 #![forbid(missing_debug_implementations)]
@@ -30,3 +30,34 @@
 #![cfg_attr(feature = "cargo-clippy", forbid(clippy_correctness))]
 #![cfg_attr(feature = "cargo-clippy", forbid(clippy_perf))]
 #![cfg_attr(feature = "cargo-clippy", forbid(clippy_style))]
+
+extern crate winreg;
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn enumerate_values() {
+        use std::str;
+        use winreg::enums::{KEY_WOW64_32KEY, HKEY_LOCAL_MACHINE, KEY_READ};
+        use winreg::RegKey;
+
+        if let Err(e) = RegKey::predef(HKEY_LOCAL_MACHINE)
+            .open_subkey_with_flags(
+                r"SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.1",
+                KEY_READ | KEY_WOW64_32KEY,
+            )
+            .and_then(|winsdk81_key| {
+                for value in winsdk81_key.enum_values() {
+                    let v = value?;
+                    println!(
+                        "{}: {}",
+                        v.0,
+                        str::from_utf8(&v.1.bytes).expect("reg value is not valid UTF-8")
+                    );
+                }
+                Ok(())
+            }) {
+            panic!("{}", e);
+        }
+    }
+}
