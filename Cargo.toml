@@ -1,0 +1,10 @@
+[package]
+name = "find-winsdk"
+version = "0.1.0"
+authors = ["FaultyRAM <explodingpsu@gmail.com>"]
+description = "Provides support for detecting Windows SDK installations."
+repository = "https://github.com/FaultyRAM/find-winsdk"
+readme = "README.md"
+keywords = ["winsdk", "detection"]
+categories = ["development-tools::build-utils"]
+license = "Apache-2.0 OR MIT"
