@@ -121,7 +121,14 @@ impl SdkInfo {
     fn get_info<P: AsRef<OsStr>>(subkey: P) -> io::Result<Option<Self>> {
         RegKey::predef(HKEY_LOCAL_MACHINE)
             .open_subkey_with_flags(subkey, KEY_QUERY_VALUE | KEY_WOW64_32KEY)
-            .map(|key| Some(key.decode().expect("could not deserialize registry key")))
+            .map(|key| {
+                // If deserialization fails, the key might not have been deleted correctly.
+                if let Ok(info) = key.decode() {
+                    Some(info)
+                } else {
+                    None
+                }
+            })
             .or_else(|e| {
                 if e.kind() == ErrorKind::NotFound {
                     Ok(None)
