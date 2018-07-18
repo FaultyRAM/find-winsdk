@@ -206,7 +206,7 @@ mod tests {
     #[test]
     fn winsdk_env() {
         let _ = SdkInfo::find(SdkVersion::Env)
-            .unwrap_or_else(|| unreachable!())
+            .unwrap_or_else(|_| unreachable!())
             .expect("environment does not specify a Windows SDK installation");
     }
 
