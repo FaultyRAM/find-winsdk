@@ -12,10 +12,10 @@ Provides support for detecting Windows SDK installations.
 ```rust
 extern crate find_winsdk;
 
-use find_winsdk::SdkInfo;
+use find_winsdk::{SdkInfo, SdkVersion};
 
 fn main() {
-    println!("{:?}", SdkInfo::any().unwrap().expect("Windows SDK is not installed"));
+    println!("{:?}", SdkInfo::find(SdkVersion::Any).unwrap().unwrap());
 }
 ```
 
